@@ -1,0 +1,107 @@
+{
+  "info": {
+    "_postman_id": "bfd5d7a8-1463-4876-88fe-72d8e4896e00",
+    "name": "Rentopus Call Scheduler",
+    "description": "Postman collection for Rentopus Call Scheduler APIs featuring Schedule Call, Call Resolution, and Lead List bulk queueing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Schedule Call",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"clientName\": \"Vishal Patel\",\n  \"clientNumber\": \"+916353778872\",\n  \"clientRequirement\": \"2BHK flat in Ahmedabad, budget 50L\",\n  \"clientOtherDetails\": {\n    \"source\": \"website\",\n    \"priority\": \"high\"\n  },\n  \"delayMinutes\": 5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/scheduleCall",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "scheduleCall"
+          ]
+        },
+        "description": "Validates the lead details, triggers telephony integration, and pushes the call task to the BullMQ priority queue."
+      },
+      "response": []
+    },
+    {
+      "name": "Call Resolution",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"leadId\": 1,\n  \"clientName\": \"Vishal Patel\",\n  \"clientNumber\": \"+916353778872\",\n  \"clientRequirement\": \"2BHK flat in Ahmedabad, budget 50L\",\n  \"clientOtherDetails\": {\n    \"attemptCount\": 0\n  },\n  \"transcript\": \"Agent: Hello Vishal, I am calling from Rentopus regarding your requirement for a 2BHK in Ahmedabad.\\nClient: Yes, I am interested, but my budget is strictly 50 lakhs.\\nAgent: Sure, I will note that and follow up tomorrow with options.\\nClient: Okay, call me tomorrow at 4 PM.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/callResolution",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "callResolution"
+          ]
+        },
+        "description": "Receives the call transcript, utilizes Gemini AI to parse structured resolution insights, updates the CRM with sentiment/status, and queues standard follow-up if callback was requested."
+      },
+      "response": []
+    },
+    {
+      "name": "Lead List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/leadList",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "leadList"
+          ]
+        },
+        "description": "Fetches today's active lead list from Rentopus CRM and automatically processes them into staggered call queues in BullMQ."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
