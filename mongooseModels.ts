@@ -13,6 +13,7 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 // ── 1. LEAD MODEL ─────────────────────────────────────────────────────────────
 export interface ILead extends Document {
   clientName: string;
+  shopName?: string;
   clientNumber: string;
   clientRequirement: string;
   clientOtherDetails: Record<string, any>;
@@ -23,6 +24,7 @@ export interface ILead extends Document {
 const LeadSchema: Schema<ILead> = new Schema(
   {
     clientName: { type: String, required: true, trim: true },
+    shopName: { type: String, trim: true, default: "" },
     clientNumber: { type: String, required: true, unique: true, trim: true },
     clientRequirement: { type: String, required: true },
     clientOtherDetails: { type: Schema.Types.Mixed, default: {} },
@@ -136,7 +138,7 @@ export interface ICallHistory extends Document {
   startedAt: Date;
   endedAt?: Date | null;
   duration?: number | null; // duration in seconds
-  status: "pending" | "active" | "completed" | "failed" | "busy" | "no_answer";
+  status: "pending" | "active" | "completed" | "failed" | "busy" | "no_answer" | "accepted" | "rejected";
   sentiment?: string | null;
   summary?: string | null;
   nextAction?: string | null;
@@ -156,7 +158,7 @@ const CallHistorySchema: Schema<ICallHistory> = new Schema(
     duration: { type: Number, default: null },
     status: { 
       type: String, 
-      enum: ["pending", "active", "completed", "failed", "busy", "no_answer"], 
+      enum: ["pending", "active", "completed", "failed", "busy", "no_answer", "accepted", "rejected"], 
       default: "pending" 
     },
     sentiment: { type: String, default: null },

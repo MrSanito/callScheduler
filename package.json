@@ -6,7 +6,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "worker": "node src/worker.js",
+    "worker": "nodemon src/worker.js",
     "dev": "nodemon src/server.js",
     "dev:worker": "nodemon src/worker.js",
     "test:recordings": "node src/testVideoSdkRecordings.js",
@@ -20,6 +20,7 @@
     "ioredis": "^5.4.1",
     "mongoose": "^9.6.3",
     "morgan": "^1.10.0",
+    "music-metadata": "^11.12.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {

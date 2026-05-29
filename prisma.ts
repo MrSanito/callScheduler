@@ -23,6 +23,7 @@ generator client {
 model Lead {
   id                 String        @id @default(uuid())
   clientName         String
+  shopName           String?       // Shop name
   clientNumber       String        @unique // Phone number unique key
   clientRequirement  String
   clientOtherDetails Json?         // Priority, Source, Attempt rules dynamic details ke liye
@@ -114,6 +115,7 @@ model Transcript {
 export interface Lead {
   id: string;
   clientName: string;
+  shopName?: string;
   clientNumber: string;
   clientRequirement: string;
   clientOtherDetails?: Record<string, any>;
@@ -140,7 +142,7 @@ export interface CallHistory {
   startedAt: Date;
   endedAt?: Date | null;
   duration?: number | null;
-  status: 'pending' | 'active' | 'completed' | 'failed' | 'busy' | 'no_answer';
+  status: 'pending' | 'active' | 'completed' | 'failed' | 'busy' | 'no_answer' | 'accepted' | 'rejected';
   sentiment?: string | null;
   summary?: string | null;
   nextAction?: string | null;

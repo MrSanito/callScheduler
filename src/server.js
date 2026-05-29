@@ -2,9 +2,7 @@
 import "dotenv/config";
 import express from "express";
 import { requestLogger } from "./middleware/requestLogger.js";
-import scheduleCallRouter from "./routes/scheduleCall.js";
-import callResolutionRouter from "./routes/callResolution.js";
-import leadListRouter from "./routes/leadList.js";
+import apiRouter from "./routes/index.route.js";
 import { connectDB } from "./services/mongoose.js";
 
 const app = express();
@@ -23,9 +21,7 @@ app.use(requestLogger); // logs every request/response
 app.get("/health", (_req, res) => res.json({ status: "ok", ts: new Date().toISOString() }));
 
 // ── API Routes ────────────────────────────────────────────────────────────────
-app.use("/api/v1/scheduleCall",   scheduleCallRouter);
-app.use("/api/v1/callResolution", callResolutionRouter);
-app.use("/api/v1/leadList",       leadListRouter);
+app.use("/api/v1", apiRouter);
 
 // ── 404 Handler ───────────────────────────────────────────────────────────────
 app.use((req, res) => {
@@ -42,7 +38,12 @@ app.listen(PORT, () => {
   console.log(`\n🚀 Server running on http://localhost:${PORT}`);
   console.log(`   POST /api/v1/scheduleCall`);
   console.log(`   POST /api/v1/callResolution`);
-  console.log(`   GET  /api/v1/leadList\n`);
+  console.log(`   GET  /api/v1/leadList`);
+  console.log(`   POST /api/v1/leads`);
+  console.log(`   POST /api/v1/newLeads`);
+  console.log(`   GET  /api/v1/TodayFollowup`);
+  console.log(`   POST /api/v1/webhooks/transcript`);
+  console.log(`   POST /api/v1/webhooks/recording\n`);
 });
 
 export default app;
